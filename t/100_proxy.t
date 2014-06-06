@@ -11,13 +11,13 @@ use Plack::App::Proxy::Test;
 
 use Plack::App::Proxy;
 
+my $pid = $$;
+
 my $app = sub {
     my ($env) = @_;
     my $req = Plack::Request->new($env);
-    my $h = $req->headers->clone;
-    $h->remove_header(qw(Connection Host Referer TE X-Forwarded-For));
-    my $body = $h->as_string;
-    return [ 200, [ 'Content-Type' => 'text/plain', 'Content-Length' => length($body) ], [ $body ] ];
+    my $body = "$pid";
+    return [ 200, [ 'Content-Type' => 'text/plain', 'Content-Length' => length($body), 'X-My-Header' => $pid ], [ $body ] ];
 };
 
 test_proxy(
@@ -30,7 +30,10 @@ test_proxy(
         my $req = HTTP::Request->new(GET => 'http://localhost/index.html');
         my $res = $cb->($req);
         ok $res->is_success, 'response is success';
-        is $res->content, $req->headers->as_string, 'headers are the same';
+        my $h = $res->headers->clone;
+        $h->remove_header(qw(Client-Date Client-Peer Client-Response-Num Client-Warning Content-Length Date Server));
+        is $h->as_string('|'), "Content-Type: text/plain|X-My-Header: $pid|", 'headers are the same';
+        is $res->content, $pid, 'content is the same';
     },
 );
 

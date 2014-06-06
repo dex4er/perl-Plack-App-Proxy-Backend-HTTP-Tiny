@@ -63,7 +63,7 @@ sub call {
 
                         $writer = $respond->([
                             $res->{status},
-                            [$self->response_headers->(HTTP::Headers->new($res->{headers}))],
+                            [$self->response_headers->(HTTP::Headers->new(%{$res->{headers}}))],
                         ]);
                     }
 
@@ -77,7 +77,7 @@ sub call {
         return if $writer;
         $respond->([
             $res->{status},
-            [$self->response_headers->(HTTP::Headers->new($res->{headers}))],
+            [$self->response_headers->(HTTP::Headers->new(%{$res->{headers}}))],
             [$res->{content}],
         ]);
     };
