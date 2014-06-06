@@ -16,7 +16,7 @@ my $build = Module::Build->new(
     license                 => 'perl',
     requires                => {
         'perl'                  => 5.006,
-        'HTTP::Tiny'            => 0,
+        'HTTP::Tiny::PreserveHostHeader' => 0,
         'Plack'                 => 0,
         'Plack::App::Proxy'     => 0,
     },

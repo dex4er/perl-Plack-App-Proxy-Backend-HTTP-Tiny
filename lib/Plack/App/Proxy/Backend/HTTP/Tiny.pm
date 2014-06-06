@@ -34,7 +34,7 @@ our $VERSION = '0.0100';
 
 use parent qw(Plack::App::Proxy::Backend);
 
-use HTTP::Tiny;
+use HTTP::Tiny::PreserveHostHeader;
 use HTTP::Headers;
 
 
@@ -44,7 +44,7 @@ sub call {
     return sub {
         my $respond = shift;
 
-        my $ua = HTTP::Tiny->new(max_redirect => 0, %{ $self->options || {} });
+        my $ua = HTTP::Tiny::PreserveHostHeader->new(max_redirect => 0, %{ $self->options || {} });
 
         my $writer;
 
