@@ -44,7 +44,7 @@ sub call {
     return sub {
         my $respond = shift;
 
-        my $ua = HTTP::Tiny->new(%{ $self->options || {} });
+        my $ua = HTTP::Tiny->new(max_redirect => 0, %{ $self->options || {} });
 
         my $writer;
 
