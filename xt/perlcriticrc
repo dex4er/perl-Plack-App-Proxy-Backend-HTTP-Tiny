@@ -12,6 +12,8 @@ max_elsif = 8
 [Modules::ProhibitExcessMainComplexity]
 max_mccabe = 32
 
+[-Modules::ProhibitMultiplePackages]
+
 [NamingConventions::ProhibitAmbiguousNames]
 forbid = last set left right no abstract contract record second
 
@@ -25,6 +27,9 @@ minimum_regex_length_to_complain_about = 75
 max_mccabe = 40
 
 [-Subroutines::ProhibitSubroutinePrototypes]
+
+[Subroutines::ProhibitUnusedPrivateSubroutines]
+allow = _agent _prepare_headers_and_cb
 
 [Subroutines::RequireArgUnpacking]
 short_subroutine_statements = 2

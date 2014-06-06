@@ -44,7 +44,10 @@ sub call {
     return sub {
         my $respond = shift;
 
-        my $ua = HTTP::Tiny::PreserveHostHeader->new(max_redirect => 0, %{ $self->options || {} });
+        my $ua = Plack::App::Proxy::Backend::HTTP::Tiny::PreserveHeaders->new(
+            max_redirect => 0,
+            %{ $self->options || {} }
+        );
 
         my $writer;
 
@@ -89,6 +92,30 @@ sub call {
             [$res->{content}],
         ]);
     };
+}
+
+
+package Plack::App::Proxy::Backend::HTTP::Tiny::PreserveHeaders;
+
+use parent 'HTTP::Tiny';
+
+# Preserve Host and User-Agent headers
+sub _prepare_headers_and_cb {
+    my ($self, $request, $args, $url, $auth) = @_;
+
+    my ($host, $user_agent);
+
+    while (my ($k, $v) = each %{$args->{headers}}) {
+        $host = $v if lc $k eq 'host';
+        $user_agent = $v if lc $k eq 'user-agent';
+    }
+
+    $self->SUPER::_prepare_headers_and_cb($request, $args, $url, $auth);
+
+    $request->{headers}{'host'} = $host if $host;
+    delete $request->{headers}{'user-agent'} if not defined $user_agent;
+
+    return;
 }
 
 
