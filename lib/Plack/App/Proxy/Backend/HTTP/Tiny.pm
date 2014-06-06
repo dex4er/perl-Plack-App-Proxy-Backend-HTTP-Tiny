@@ -55,6 +55,8 @@ sub call {
                 data_callback => sub {
                     my ($data, $res) = @_;
 
+                    return if $res->{status} =~ /^59\d+/;
+
                     if (not $writer) {
                         $env->{'plack.proxy.last_protocol'} = '1.1'; # meh
                         $env->{'plack.proxy.last_status'}   = $res->{status};
@@ -72,10 +74,16 @@ sub call {
             }
         );
 
-        $writer->close if $writer;
+        if ($writer) {
+            $writer->close;
+            return;
+        }
 
-        return if $writer;
-        $respond->([
+        if ($res->{status} =~ /^59\d/) {
+            return $respond->([502, ['Content-Type' => 'text/html'], ["Gateway error: $res->{content}"]]);
+        }
+
+        return $respond->([
             $res->{status},
             [$self->response_headers->(HTTP::Headers->new(%{$res->{headers}}))],
             [$res->{content}],
