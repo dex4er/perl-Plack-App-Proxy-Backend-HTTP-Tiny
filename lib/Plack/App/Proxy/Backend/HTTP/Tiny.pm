@@ -41,7 +41,7 @@ sub call {
     my ($self, $env) = @_;
 
     return sub {
-        my $respond = shift;
+        my ($respond) = @_;
 
         my $ua = Plack::App::Proxy::Backend::HTTP::Tiny::PreserveHeaders->new(
             max_redirect => 0,
