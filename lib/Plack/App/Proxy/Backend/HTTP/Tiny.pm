@@ -34,7 +34,6 @@ our $VERSION = '0.0100';
 
 use parent qw(Plack::App::Proxy::Backend);
 
-use HTTP::Tiny::PreserveHostHeader;
 use HTTP::Headers;
 
 
