@@ -19,6 +19,11 @@ Plack::App::Proxy::HTTP::Tiny - backend for Plack::App::Proxy
 
 This backend uses [HTTP::Tiny](https://metacpan.org/pod/HTTP::Tiny) to make HTTP requests.
 
+[HTTP::Tiny](https://metacpan.org/pod/HTTP::Tiny) backend is Pure-Perl only and doesn't require any
+architecture specific files.
+
+It is possible to bundle it e.g. by [App::FatPacker](https://metacpan.org/pod/App::FatPacker).
+
 # SEE ALSO
 
 [Plack](https://metacpan.org/pod/Plack), [Plack::App::Proxy](https://metacpan.org/pod/Plack::App::Proxy), [Plack::Middleware::Proxy::Requests](https://metacpan.org/pod/Plack::Middleware::Proxy::Requests),

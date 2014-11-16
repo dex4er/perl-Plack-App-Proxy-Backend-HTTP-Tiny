@@ -17,6 +17,11 @@ DESCRIPTION
 
     This backend uses HTTP::Tiny to make HTTP requests.
 
+    HTTP::Tiny backend is Pure-Perl only and doesn't require any
+    architecture specific files.
+
+    It is possible to bundle it e.g. by App::FatPacker.
+
 SEE ALSO
 
     Plack, Plack::App::Proxy, Plack::Middleware::Proxy::Requests,

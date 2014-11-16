@@ -19,6 +19,11 @@ Plack::App::Proxy::HTTP::Tiny - backend for Plack::App::Proxy
 
 This backend uses L<HTTP::Tiny> to make HTTP requests.
 
+L<HTTP::Tiny> backend is Pure-Perl only and doesn't require any
+architecture specific files.
+
+It is possible to bundle it e.g. by L<App::FatPacker>.
+
 =for readme stop
 
 =cut
