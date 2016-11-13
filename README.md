@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/dex4er/perl-Plack-App-Proxy-Backend-HTTP-Tiny.png?branch=master)](https://travis-ci.org/dex4er/perl-Plack-App-Proxy-Backend-HTTP-Tiny)n
+[![Build Status](https://travis-ci.org/dex4er/perl-Plack-App-Proxy-Backend-HTTP-Tiny.svg?branch=master)](https://travis-ci.org/dex4er/perl-Plack-App-Proxy-Backend-HTTP-Tiny)[![CPAN version](https://badge.fury.io/pl/Plack-App-Proxy-Backend-HTTP-Tiny.svg)](https://metacpan.org/release/Plack-App-Proxy-Backend-HTTP-Tiny)
+
 # NAME
 
 Plack::App::Proxy::HTTP::Tiny - backend for Plack::App::Proxy
