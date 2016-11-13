@@ -103,6 +103,8 @@ package Plack::App::Proxy::Backend::HTTP::Tiny::PreserveHeaders;
 
 use parent 'HTTP::Tiny';
 
+our $VERSION = $HTTP::Tiny::VERSION;
+
 # Preserve Host and User-Agent headers
 sub _prepare_headers_and_cb {
     my ($self, $request, $args, $url, $auth) = @_;
@@ -110,8 +112,13 @@ sub _prepare_headers_and_cb {
     my ($host, $user_agent);
 
     while (my ($k, $v) = each %{$args->{headers}}) {
-        $host = $v if lc $k eq 'host';
-        $user_agent = $v if lc $k eq 'user-agent';
+        if (lc $k eq 'host') {
+            $host = $v;
+            delete $args->{headers}{$k};
+        }
+        if (lc $k eq 'user-agent') {
+            $user_agent = $v;
+        }
     }
 
     $self->SUPER::_prepare_headers_and_cb($request, $args, $url, $auth);
