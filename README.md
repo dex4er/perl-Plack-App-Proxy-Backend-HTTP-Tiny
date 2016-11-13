@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/dex4er/perl-Plack-App-Proxy-Backend-HTTP-Tiny.png?branch=master)](https://travis-ci.org/dex4er/perl-Plack-App-Proxy-Backend-HTTP-Tiny)
-
+[![Build Status](https://travis-ci.org/dex4er/perl-Plack-App-Proxy-Backend-HTTP-Tiny.png?branch=master)](https://travis-ci.org/dex4er/perl-Plack-App-Proxy-Backend-HTTP-Tiny)n
 # NAME
 
 Plack::App::Proxy::HTTP::Tiny - backend for Plack::App::Proxy
@@ -46,7 +45,7 @@ Piotr Roszatycki <dexter@cpan.org>
 
 # LICENSE
 
-Copyright (c) 2014 Piotr Roszatycki <dexter@cpan.org>.
+Copyright (c) 2014-2016 Piotr Roszatycki <dexter@cpan.org>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as perl itself.
