@@ -103,7 +103,9 @@ package Plack::App::Proxy::Backend::HTTP::Tiny::PreserveHeaders;
 
 use parent 'HTTP::Tiny';
 
-our $VERSION = $HTTP::Tiny::VERSION;
+sub _agent {
+    return HTTP::Tiny->_agent;
+}
 
 # Preserve Host and User-Agent headers
 sub _prepare_headers_and_cb {
