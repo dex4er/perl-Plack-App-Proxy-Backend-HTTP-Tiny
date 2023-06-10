@@ -16,12 +16,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cpanm/sources
+          key: cpanm-${{ runner.os }}-trunk
+          restore-keys: |
+            cpanm-${{ runner.os }}-
+
       - name: Checkout
         uses: actions/checkout@v3
 
-      - uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: libperl-critic-perl perltidy
+      - name: Install cpanmw
+        run: curl -L cpanmin.us | perl - --sudo --notest --skip-satisfied App::cpanmw
+
+      - name: Install linters
+        run: cpanmw --sudo --notest --skip-satisfied Perl::Critic Perl::Critic::Community Perl::Tidy
 
       - name: Trunk Check
         uses: trunk-io/trunk-action@v1
