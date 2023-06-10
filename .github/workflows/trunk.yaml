@@ -18,19 +18,22 @@ jobs:
     steps:
       - uses: actions/cache@v3
         with:
-          path: ~/.cpanm/sources
-          key: cpanm-${{ runner.os }}-trunk
-          restore-keys: |
-            cpanm-${{ runner.os }}-
+          path: local
+          key: cpm-trunk-${{ runner.os }}
 
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install cpanmw
-        run: curl -L cpanmin.us | perl - --sudo --notest --skip-satisfied App::cpanmw
+      - name: Use local Perl packages
+        run: |
+          echo "$GITHUB_WORKSPACE/local/bin" | tee -a $GITHUB_PATH
+          echo "PERL5LIB=$GITHUB_WORKSPACE/local/lib/perl5" | tee -a $GITHUB_ENV
+
+      - name: Install cpm
+        run: curl -sL https://git.io/cpm | perl - install --color --no-test --show-build-log-on-failure App::cpm
 
       - name: Install linters
-        run: cpanmw --sudo --notest --skip-satisfied Perl::Critic Perl::Critic::Community Perl::Tidy
+        run: cpm install --color --no-test --show-build-log-on-failure Perl::Critic Perl::Critic::Community Perl::Tidy
 
       - name: Trunk Check
         uses: trunk-io/trunk-action@v1

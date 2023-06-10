@@ -75,3 +75,6 @@
 
 # Avoid dot files
 ^\.(?!perlcritic)
+
+# Avoid cpm
+^local$

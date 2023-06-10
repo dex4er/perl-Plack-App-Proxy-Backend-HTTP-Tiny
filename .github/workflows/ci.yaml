@@ -43,23 +43,23 @@ jobs:
     steps:
       - uses: actions/cache@v3
         with:
-          path: ~/.cpanm/sources
-          key: cpanm-${{ runner.os }}-ci-${{ hashFiles('Build.PL') }}
-          restore-keys: |
-            cpanm-${{ runner.os }}-
+          path: local
+          key: cpm-ci-${{ runner.os }}-${{ hashFiles('Build.PL') }}
 
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install cpanmw
-        run: cpanm --notest --skip-satisfied App::cpanmw
+      - name: Use local Perl packages
+        run: |
+          echo "$GITHUB_WORKSPACE/local/bin" | tee -a $GITHUB_PATH
+          echo "PERL5LIB=$GITHUB_WORKSPACE/local/lib/perl5" | tee -a $GITHUB_ENV
 
       - name: Install required dependencies
-        run: cpanmw --with-recommends --installdeps --notest --skip-satisfied .
+        run: cpm install --color --with-recommends --no-test --show-build-log-on-failure .
 
       - name: Install extra dependencies
         if: matrix.perl-version == '5.36'
-        run: cpanmw --notest --skip-satisfied $(cat xt/cpanm.txt)
+        run: cpm install --color --no-test --show-build-log-on-failure $(cat xt/cpanm.txt)
 
       - name: Skip extra tests
         run: echo 'TEST_SKIP_EXTRA=${{ (matrix.perl-version == '5.36' && 'perlcritic.t') || '1' }}' >> $GITHUB_ENV
