@@ -32,6 +32,17 @@ jobs:
       - name: Install cpm
         run: curl -sL https://git.io/cpm | perl - install --color --no-test --show-build-log-on-failure App::cpm
 
+      - name: Install Module::Build
+        run: cpm install --color --with-recommends --no-test --show-build-log-on-failure Module::Build
+
+      - name: Generate meta data
+        run: |
+          perl Build.PL
+          perl Build distmeta
+
+      - name: Install required dependencies
+        run: cpm install --color --with-recommends --no-test --show-build-log-on-failure .
+
       - name: Install linters
         run: cpm install --color --no-test --show-build-log-on-failure Perl::Critic Perl::Critic::Community Perl::Tidy
 
