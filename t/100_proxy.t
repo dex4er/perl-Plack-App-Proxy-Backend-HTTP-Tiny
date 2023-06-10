@@ -15,9 +15,9 @@ my $pid = $$;
 
 my $app = sub {
     my ($env) = @_;
-    my $req = Plack::Request->new($env);
-    my $body = "$pid";
-    return [ 200, [ 'Content-Type' => 'text/plain', 'Content-Length' => length($body), 'X-My-Header' => $pid ], [ $body ] ];
+    my $req   = Plack::Request->new($env);
+    my $body  = "$pid";
+    return [200, ['Content-Type' => 'text/plain', 'Content-Length' => length($body), 'X-My-Header' => $pid], [$body]];
 };
 
 test_proxy(
@@ -27,13 +27,13 @@ test_proxy(
     },
     client => sub {
         my ($cb) = @_;
-        my $req = HTTP::Request->new(GET => 'http://localhost/index.html');
-        my $res = $cb->($req);
+        my $req  = HTTP::Request->new(GET => 'http://localhost/index.html');
+        my $res  = $cb->($req);
         ok $res->is_success, 'response is success';
         my $h = $res->headers->clone;
         $h->remove_header(qw(Client-Date Client-Peer Client-Response-Num Client-Warning Content-Length Date Server));
         is $h->as_string('|'), "Content-Type: text/plain|X-My-Header: $pid|", 'headers are the same';
-        is $res->content, $pid, 'content is the same';
+        is $res->content,      $pid,                                          'content is the same';
     },
 );
 

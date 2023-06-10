@@ -6,21 +6,25 @@ Plack::App::Proxy::HTTP::Tiny - backend for Plack::App::Proxy
 
 =head1 SYNOPSIS
 
-  # In app.psgi
-  use Plack::Builder;
-  use Plack::App::Proxy::Anonymous;
+=for markdown ```perl
 
-  builder {
-      enable "Proxy::Requests";
-      Plack::App::Proxy->new(backend => 'HTTP::Tiny')->to_app;
-  };
+    # In app.psgi
+    use Plack::Builder;
+    use Plack::App::Proxy::Anonymous;
+
+    builder {
+        enable "Proxy::Requests";
+        Plack::App::Proxy->new(backend => 'HTTP::Tiny')->to_app;
+    };
+
+=for markdown ```
 
 =head1 DESCRIPTION
 
-This backend uses L<HTTP::Tiny> to make HTTP requests.
+This backend uses L<HTTP::Tiny::PreserveHostHeader> to make HTTP requests.
 
-L<HTTP::Tiny> backend is Pure-Perl only and doesn't require any
-architecture specific files.
+L<HTTP::Tiny::PreserveHostHeader> is a wrapper for L<HTTP::Tiny> which is
+Pure-Perl only and doesn't require any architecture specific files.
 
 It is possible to bundle it e.g. by L<App::FatPacker>.
 
@@ -39,20 +43,22 @@ use parent qw(Plack::App::Proxy::Backend);
 
 use HTTP::Headers;
 
+use HTTP::Tiny::PreserveHostHeader;
+
 sub call {
     my ($self, $env) = @_;
 
     return sub {
         my ($respond) = @_;
 
-        my $ua = Plack::App::Proxy::Backend::HTTP::Tiny::PreserveHeaders->new(
+        my $http = HTTP::Tiny::PreserveHostHeader->new(
             max_redirect => 0,
             %{ $self->options || {} }
         );
 
         my $writer;
 
-        my $res = $ua->request(
+        my $response = $http->request(
             $self->method => $self->url,
             {   headers       => $self->headers,
                 content       => $self->content,
@@ -84,49 +90,17 @@ sub call {
             return;
         }
 
-        if ($res->{status} =~ /^59\d/) {
-            return $respond->([502, ['Content-Type' => 'text/html'], ["Gateway error: $res->{content}"]]);
+        if ($response->{status} =~ /^59\d/) {
+            return $respond->([502, ['Content-Type' => 'text/html'], ["Gateway error: $response->{content}"]]);
         }
 
         return $respond->(
-            [   $res->{status},
-                [$self->response_headers->(HTTP::Headers->new(%{ $res->{headers} }))],
-                [$res->{content}],
+            [   $response->{status},
+                [$self->response_headers->(HTTP::Headers->new(%{ $response->{headers} }))],
+                [$response->{content}],
             ]
         );
     };
-}
-
-package Plack::App::Proxy::Backend::HTTP::Tiny::PreserveHeaders;
-
-use parent 'HTTP::Tiny';
-
-sub _agent {
-    return HTTP::Tiny->_agent;
-}
-
-# Preserve Host and User-Agent headers
-sub _prepare_headers_and_cb {
-    my ($self, $request, $args, $url, $auth) = @_;
-
-    my ($host, $user_agent);
-
-    while (my ($k, $v) = each %{ $args->{headers} }) {
-        if (lc $k eq 'host') {
-            $host = $v;
-            delete $args->{headers}{$k};
-        }
-        if (lc $k eq 'user-agent') {
-            $user_agent = $v;
-        }
-    }
-
-    $self->SUPER::_prepare_headers_and_cb($request, $args, $url, $auth);
-
-    $request->{headers}{'host'} = $host      if $host;
-    delete $request->{headers}{'user-agent'} if not defined $user_agent;
-
-    return;
 }
 
 1;
