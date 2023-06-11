@@ -26,7 +26,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: local
-          key: cpm-release-${{ runner.os }}-${{ hashFiles('Build.PL') }}
+          key: cpm-release-${{ runner.os }}-202306110202-${{ hashFiles('cpanfile') }}
 
       - name: Checkout
         uses: actions/checkout@v3
