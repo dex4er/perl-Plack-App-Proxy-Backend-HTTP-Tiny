@@ -1,16 +1,18 @@
+requires 'perl', '5.006';
+
 requires 'HTTP::Tiny::PreserveHostHeader';
 requires 'Plack';
 requires 'Plack::App::Proxy';
 
-on 'build' => sub {
+on build => sub {
     requires 'Module::Build';
 };
 
-on 'test' => sub {
+on test => sub {
     requires 'Test::More', '0.88';
 };
 
-on 'develop' => sub {
+on develop => sub {
     requires 'Devel::Cover';
     requires 'Devel::NYTProf';
     requires 'File::Slurp';
