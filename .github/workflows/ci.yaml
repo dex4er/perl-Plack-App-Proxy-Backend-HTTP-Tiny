@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  test_cpm:
+  test_with_cpm:
     strategy:
       fail-fast: false
       matrix:
@@ -53,11 +53,11 @@ jobs:
           echo "PERL5LIB=$GITHUB_WORKSPACE/local/lib/perl5" | tee -a $GITHUB_ENV
 
       - name: Install required dependencies
-        run: cpm install --color --no-test --show-build-log-on-failure --with-recommends
+        run: cpm install --color --no-test --with-recommends
 
       - name: Install extra dependencies
         if: matrix.perl-version == '5.36'
-        run: cpm install --color --no-test --show-build-log-on-failure --with-develop
+        run: cpm install --color --no-test --with-develop
 
       - name: Skip extra tests
         run: echo 'TEST_SKIP_EXTRA=${{ (matrix.perl-version == '5.36' && 'perlcritic.t') || '1' }}' >> $GITHUB_ENV
@@ -68,7 +68,7 @@ jobs:
       - name: Verify changed files
         uses: tj-actions/verify-changed-files@v14
 
-  test_cpanm:
+  test_with_cpanm:
     strategy:
       fail-fast: false
       matrix:
@@ -86,7 +86,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install required dependencies
-        run: cpanmw --with-recommends --installdeps --notest --skip-satisfied .
+        run: cpanm --with-recommends --installdeps --notest --skip-satisfied .
 
       - name: Skip extra tests
         run: echo 'TEST_SKIP_EXTRA=1' >> $GITHUB_ENV

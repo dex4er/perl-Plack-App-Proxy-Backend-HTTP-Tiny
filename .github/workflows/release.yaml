@@ -37,13 +37,13 @@ jobs:
           echo "PERL5LIB=$GITHUB_WORKSPACE/local/lib/perl5" | tee -a $GITHUB_ENV
 
       - name: Install required dependencies
-        run: cpm install --color --no-test --show-build-log-on-failure --with-recommends
+        run: cpm install --color --no-test --with-recommends
 
       - name: Install extra dependencies
-        run: cpm install --color --no-test --show-build-log-on-failure --with-develop
+        run: cpm install --color --no-test --with-develop
 
       - name: Install pause CLI
-        run: cpm install --color --no-test --show-build-log-on-failure App::pause Data::Sah::Type::str
+        run: cpm install --color --no-test App::pause Data::Sah::Type::str
 
       - name: Make distribution
         run: ./Dist.SH

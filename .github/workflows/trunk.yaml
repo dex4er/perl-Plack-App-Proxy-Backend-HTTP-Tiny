@@ -30,13 +30,13 @@ jobs:
           echo "PERL5LIB=$GITHUB_WORKSPACE/local/lib/perl5" | tee -a $GITHUB_ENV
 
       - name: Install cpm
-        run: curl -sL https://git.io/cpm | perl - install --color --no-test --show-build-log-on-failure App::cpm
+        run: curl -sL https://git.io/cpm | perl - install --color --no-test App::cpm
 
       - name: Install required dependencies
-        run: cpm install --color --no-test --show-build-log-on-failure --with-recommends
+        run: cpm install --color --no-test --with-recommends
 
       - name: Install linters
-        run: cpm install --color --no-test --show-build-log-on-failure Perl::Critic Perl::Critic::Community Perl::Tidy
+        run: cpm install --color --no-test Perl::Critic Perl::Critic::Community Perl::Tidy
 
       - name: Trunk Check
         uses: trunk-io/trunk-action@v1
