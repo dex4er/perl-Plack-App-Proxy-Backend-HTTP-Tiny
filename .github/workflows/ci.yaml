@@ -41,8 +41,8 @@ jobs:
     steps:
       - uses: actions/cache@v3
         with:
-          path: local
-          key: cpm-ci-${{ runner.os }}-202306110202-${{ hashFiles('cpanfile') }}
+          path: local/
+          key: cpm-ci-${{ runner.os }}-202306110235-${{ hashFiles('cpanfile') }}
 
       - name: Checkout
         uses: actions/checkout@v3
