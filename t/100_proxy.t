@@ -30,6 +30,7 @@ test_proxy(
         my $req  = HTTP::Request->new(GET => 'http://localhost/index.html');
         my $res  = $cb->($req);
         ok $res->is_success, 'response is success';
+        is $res->status_line, '200 OK', 'response is 200 OK';
         my $h = $res->headers->clone;
         $h->remove_header(qw(Client-Date Client-Peer Client-Response-Num Client-Warning Content-Length Date Server));
         is $h->as_string('|'), "Content-Type: text/plain|X-My-Header: $pid|", 'headers are the same';
