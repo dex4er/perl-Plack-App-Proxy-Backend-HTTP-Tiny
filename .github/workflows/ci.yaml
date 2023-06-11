@@ -39,13 +39,14 @@ jobs:
       image: perldocker/perl-tester:${{ matrix.perl-version }}
 
     steps:
-      - uses: actions/cache@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use cache
+        uses: actions/cache@v3
         with:
           path: local/
           key: cpm-ci-${{ runner.os }}-202306110235-${{ hashFiles('cpanfile') }}
-
-      - name: Checkout
-        uses: actions/checkout@v3
 
       - name: Use local Perl packages
         run: |
