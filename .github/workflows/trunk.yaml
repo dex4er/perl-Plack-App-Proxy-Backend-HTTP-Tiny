@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: local/
-          key: cpm-trunk-${{ runner.os }}-202306110235
+          key: cpm-trunk-${{ runner.os }}-${{ hashFiles('cpanfile') }}
 
       - name: Use local Perl packages
         run: |
