@@ -60,7 +60,8 @@ sub call {
 
         my $response = $http->request(
             $self->method => $self->url,
-            {   headers       => $self->headers,
+            {
+                headers       => $self->headers,
                 content       => $self->content,
                 data_callback => sub {
                     my ($data, $res) = @_;
@@ -68,13 +69,14 @@ sub call {
                     return if $res->{status} =~ /^59\d+/;
 
                     if (not $writer) {
-                        $env->{'plack.proxy.last_protocol'} = '1.1';            # meh
-                        $env->{'plack.proxy.last_status'}   = $res->{status};
-                        $env->{'plack.proxy.last_reason'}   = $res->{reason};
-                        $env->{'plack.proxy.last_url'}      = $self->url;
+                        $env->{'plack.proxy.last_protocol'} = '1.1';    # meh
+                        $env->{'plack.proxy.last_status'} = $res->{status};
+                        $env->{'plack.proxy.last_reason'} = $res->{reason};
+                        $env->{'plack.proxy.last_url'} = $self->url;
 
                         $writer = $respond->(
-                            [   $res->{status},
+                            [
+                                $res->{status},
                                 [$self->response_headers->(HTTP::Headers->new(%{ $res->{headers} }))],
                             ]
                         );
@@ -95,7 +97,8 @@ sub call {
         }
 
         return $respond->(
-            [   $response->{status},
+            [
+                $response->{status},
                 [$self->response_headers->(HTTP::Headers->new(%{ $response->{headers} }))],
                 [$response->{content}],
             ]
