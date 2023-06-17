@@ -37,7 +37,7 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = '0.0201';
+our $VERSION = '0.0202';
 
 use parent qw(Plack::App::Proxy::Backend);
 
