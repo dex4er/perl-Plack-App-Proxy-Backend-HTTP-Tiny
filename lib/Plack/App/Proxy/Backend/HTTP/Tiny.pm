@@ -2,7 +2,7 @@ package Plack::App::Proxy::Backend::HTTP::Tiny;
 
 =head1 NAME
 
-Plack::App::Proxy::HTTP::Tiny - backend for Plack::App::Proxy
+Plack::App::Proxy::HTTP::Tiny - Backend for Plack::App::Proxy
 
 =head1 SYNOPSIS
 
@@ -37,7 +37,7 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = '0.0202';
+our $VERSION = '0.0203';
 
 use parent qw(Plack::App::Proxy::Backend);
 

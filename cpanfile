@@ -1,10 +1,10 @@
-requires 'perl', '5.006';
+requires 'perl', '5.008';
 
 requires 'HTTP::Tiny::PreserveHostHeader';
 requires 'Plack';
 requires 'Plack::App::Proxy';
 
-on build => sub {
+on configure => sub {
     requires 'Module::Build';
     requires 'Module::CPANfile';
 };
