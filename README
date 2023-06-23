@@ -1,16 +1,17 @@
 NAME
 
-    Plack::App::Proxy::HTTP::Tiny - backend for Plack::App::Proxy
+    Plack::App::Proxy::HTTP::Tiny - Backend for Plack::App::Proxy
 
 SYNOPSIS
 
         # In app.psgi
         use Plack::Builder;
-        use Plack::App::Proxy::Anonymous;
     
         builder {
             enable "Proxy::Requests";
-            Plack::App::Proxy->new(backend => 'HTTP::Tiny')->to_app;
+            Plack::App::Proxy->new(backend => 'HTTP::Tiny', options => {
+                timeout => 15
+            })->to_app;
         };
 
 DESCRIPTION
@@ -22,10 +23,19 @@ DESCRIPTION
 
     It is possible to bundle it e.g. by App::FatPacker.
 
+    All options from the Plack::App::Proxy constructor goes to
+    HTTP::Tiny::PreserveHostHeader constructor. This backend sets some
+    default options for HTTP::Tiny::PreserveHostHeader:
+
+        max_redirect => 0,
+        http_proxy   => undef,
+        https_proxy  => undef,
+        all_proxy    => undef,
+
 SEE ALSO
 
     Plack, Plack::App::Proxy, Plack::Middleware::Proxy::Requests,
-    HTTP::Tiny.
+    HTTP::Tiny, HTTP::Tiny::PreserveHostHeader.
 
 BUGS
 

@@ -13,5 +13,5 @@ use Plack::App::Proxy;
 builder {
     enable 'AccessLog';
     enable 'Proxy::Requests';
-    Plack::App::Proxy->new(backend => 'HTTP::Tiny')->to_app;
+    Plack::App::Proxy->new(backend => 'HTTP::Tiny', options => { timeout => 15 })->to_app;
 };

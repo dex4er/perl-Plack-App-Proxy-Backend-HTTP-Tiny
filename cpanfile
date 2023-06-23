@@ -7,6 +7,7 @@ requires 'Plack::App::Proxy';
 on configure => sub {
     requires 'Module::Build';
     requires 'Module::CPANfile';
+    requires 'Software::License';
 };
 
 on test => sub {

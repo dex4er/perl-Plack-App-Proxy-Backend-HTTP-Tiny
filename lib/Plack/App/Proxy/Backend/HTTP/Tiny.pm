@@ -10,11 +10,12 @@ Plack::App::Proxy::HTTP::Tiny - Backend for Plack::App::Proxy
 
     # In app.psgi
     use Plack::Builder;
-    use Plack::App::Proxy::Anonymous;
 
     builder {
         enable "Proxy::Requests";
-        Plack::App::Proxy->new(backend => 'HTTP::Tiny')->to_app;
+        Plack::App::Proxy->new(backend => 'HTTP::Tiny', options => {
+            timeout => 15
+        })->to_app;
     };
 
 =for markdown ```
@@ -28,6 +29,19 @@ Pure-Perl only and doesn't require any architecture specific files.
 
 It is possible to bundle it e.g. by L<App::FatPacker>.
 
+All I<options> from the L<Plack::App::Proxy> constructor goes to
+L<HTTP::Tiny::PreserveHostHeader> constructor. This backend sets some default
+options for L<HTTP::Tiny::PreserveHostHeader>:
+
+=for markdown ```perl
+
+    max_redirect => 0,
+    http_proxy   => undef,
+    https_proxy  => undef,
+    all_proxy    => undef,
+
+=for markdown ```
+
 =for readme stop
 
 =cut
@@ -37,7 +51,7 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = '0.0203';
+our $VERSION = '0.0204';
 
 use parent qw(Plack::App::Proxy::Backend);
 
@@ -53,6 +67,9 @@ sub call {
 
         my $http = HTTP::Tiny::PreserveHostHeader->new(
             max_redirect => 0,
+            http_proxy   => undef,
+            https_proxy  => undef,
+            all_proxy    => undef,
             %{ $self->options || {} }
         );
 
@@ -113,7 +130,7 @@ sub call {
 =head1 SEE ALSO
 
 L<Plack>, L<Plack::App::Proxy>, L<Plack::Middleware::Proxy::Requests>,
-L<HTTP::Tiny>.
+L<HTTP::Tiny>, L<HTTP::Tiny::PreserveHostHeader>.
 
 =head1 BUGS
 

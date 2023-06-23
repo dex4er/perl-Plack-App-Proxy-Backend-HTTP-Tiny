@@ -6,7 +6,7 @@
 
 ## NAME
 
-Plack::App::Proxy::HTTP::Tiny - backend for Plack::App::Proxy
+Plack::App::Proxy::HTTP::Tiny - Backend for Plack::App::Proxy
 
 ## SYNOPSIS
 
@@ -14,11 +14,12 @@ Plack::App::Proxy::HTTP::Tiny - backend for Plack::App::Proxy
 
     # In app.psgi
     use Plack::Builder;
-    use Plack::App::Proxy::Anonymous;
 
     builder {
         enable "Proxy::Requests";
-        Plack::App::Proxy->new(backend => 'HTTP::Tiny')->to_app;
+        Plack::App::Proxy->new(backend => 'HTTP::Tiny', options => {
+            timeout => 15
+        })->to_app;
     };
 
 ```
@@ -32,10 +33,23 @@ Pure-Perl only and doesn't require any architecture specific files.
 
 It is possible to bundle it e.g. by [App::FatPacker](https://metacpan.org/pod/App%3A%3AFatPacker).
 
+All _options_ from the [Plack::App::Proxy](https://metacpan.org/pod/Plack%3A%3AApp%3A%3AProxy) constructor goes to
+[HTTP::Tiny::PreserveHostHeader](https://metacpan.org/pod/HTTP%3A%3ATiny%3A%3APreserveHostHeader) constructor. This backend sets some default
+options for [HTTP::Tiny::PreserveHostHeader](https://metacpan.org/pod/HTTP%3A%3ATiny%3A%3APreserveHostHeader):
+
+```perl
+
+    max_redirect => 0,
+    http_proxy   => undef,
+    https_proxy  => undef,
+    all_proxy    => undef,
+
+```
+
 ## SEE ALSO
 
 [Plack](https://metacpan.org/pod/Plack), [Plack::App::Proxy](https://metacpan.org/pod/Plack%3A%3AApp%3A%3AProxy), [Plack::Middleware::Proxy::Requests](https://metacpan.org/pod/Plack%3A%3AMiddleware%3A%3AProxy%3A%3ARequests),
-[HTTP::Tiny](https://metacpan.org/pod/HTTP%3A%3ATiny).
+[HTTP::Tiny](https://metacpan.org/pod/HTTP%3A%3ATiny), [HTTP::Tiny::PreserveHostHeader](https://metacpan.org/pod/HTTP%3A%3ATiny%3A%3APreserveHostHeader).
 
 ## BUGS
 
